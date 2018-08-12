@@ -6,9 +6,7 @@ import com.teachercloud.common.ServerResponse;
 import com.teachercloud.pojo.ClassItem;
 import com.teachercloud.pojo.Course;
 import com.teachercloud.pojo.User;
-import com.teachercloud.service.IClassItemService;
-import com.teachercloud.service.IUserClassService;
-import com.teachercloud.service.IUserService;
+import com.teachercloud.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +32,9 @@ public class TeacherManageController {
     private IUserClassService iUserClassService;
 
     @Autowired
+    private ICourseService iCourseService;
+
+    @Autowired
     private IClassItemService iClassItemService;
 
     /**
@@ -53,6 +54,27 @@ public class TeacherManageController {
         if (iUserService.checkTeacherRole(user).isSuccess()) {
             ServerResponse response = iUserClassService.getClassId(user.getId());
             return iClassItemService.getClassItems((List<Long>) response.getData());
+        }
+        return ServerResponse.createByErrorMessage("无操作权限，请登录老师账户!");
+    }
+
+
+    /**
+     * 根据老师ID获取老师所教课程
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "/get_course_info.do")
+    @ResponseBody
+    public ServerResponse<List<Course>> courseListByUser(HttpSession session) {
+        //判断老师是否登陆
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse.createByErrorMessage("未登录，请登录老师账户!");
+        }
+        if (iUserService.checkTeacherRole(user).isSuccess()) {
+            ServerResponse response = iUserClassService.getClassId(user.getId());
+            return iCourseService.courseListByUser((List<Long>) response.getData());
         }
         return ServerResponse.createByErrorMessage("无操作权限，请登录老师账户!");
     }

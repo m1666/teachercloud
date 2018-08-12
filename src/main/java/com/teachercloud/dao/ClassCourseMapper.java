@@ -26,6 +26,15 @@ public interface ClassCourseMapper {
      */
     List<Integer> selectCourseIdByClassId(Long classId);
 
+
+    /**
+     * 根据多个班级ID查询课程ID
+     *
+     * @param classId
+     * @return
+     */
+    List<Integer> selectCourseIdByAllClassId(@Param("classId") List<Long> classId);
+
     /**
      * 批量更新班级开课状态
      *

@@ -31,6 +31,13 @@ public interface ICourseService {
      */
     ServerResponse<List<Course>> getCourseStudent(Long classId, String keyword);
 
+
+    /**
+     * 根据班级Id查询相关课程
+     * @param classId
+     * @return
+     */
+    ServerResponse<List<Course>> courseListByUser(List<Long> classId);
     /**
      * 检查课程ID是否存在
      *

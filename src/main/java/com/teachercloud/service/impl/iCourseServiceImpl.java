@@ -42,6 +42,17 @@ public class iCourseServiceImpl implements ICourseService {
     }
 
     @Override
+    public ServerResponse<List<Course>> courseListByUser(List<Long> classId) {
+        if (classId.size() < 0) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        List<Integer> ids = classCourseMapper.selectCourseIdByAllClassId(classId);
+        List<Course> courseList = courseMapper.selectCourseByCourseId(ids,"%%");
+        return ServerResponse.createBySuccess(courseList);
+    }
+
+
+    @Override
     public ServerResponse<List<Course>> getCourseStudent(Long classId, String keyword) {
         if (classId <= 0) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());

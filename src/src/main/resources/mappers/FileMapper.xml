@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teachercloud.dao.FileMapper">
+  <resultMap id="BaseResultMap" type="com.teachercloud.pojo.File">
+    <constructor>
+      <idArg column="file_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+      <arg column="course_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+      <arg column="class_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+      <arg column="detail" jdbcType="VARCHAR" javaType="java.lang.String"/>
+      <arg column="main_image" jdbcType="VARCHAR" javaType="java.lang.String"/>
+      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+      <arg column="type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+      <arg column="downloads" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+      <arg column="count" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    file_id, user_id, course_id, class_id, name, detail, main_image, status, type, downloads,
+    count, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <include refid="Base_Column_List"/>
+    from file
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </select>
+
+
+  <!--
+      根据文件id删除文件
+      int deleteByPrimaryKey(Long fileId);
+  -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from file
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </delete>
+
+
+  <!--
+         文件录入   录入文件信息时间改为now()
+         int insert(File record);
+   -->
+  <insert id="insert" parameterType="com.teachercloud.pojo.File">
+    insert into file ( user_id, course_id,
+      class_id, name, detail,
+      main_image, status, type,
+      downloads, count, create_time,
+      update_time)
+    values ( #{userId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER},
+      #{classId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR},
+      #{mainImage,jdbcType=VARCHAR}, 0, #{type,jdbcType=INTEGER},
+      0, 0, now(),
+      now())
+  </insert>
+
+
+  <insert id="insertSelective" parameterType="com.teachercloud.pojo.File">
+    insert into file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fileId != null">
+        file_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="courseId != null">
+        course_id,
+      </if>
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="detail != null">
+        detail,
+      </if>
+      <if test="mainImage != null">
+        main_image,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="downloads != null">
+        downloads,
+      </if>
+      <if test="count != null">
+        count,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fileId != null">
+        #{fileId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="mainImage != null">
+        #{mainImage,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="downloads != null">
+        #{downloads,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <!--
+        根据文件的id对文件的信息进行修改（文件状态等一些信息）
+        int updateByPrimaryKeySelective(File record);
+  -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.teachercloud.pojo.File">
+    update file
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="mainImage != null">
+        main_image = #{mainImage,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="downloads != null">
+        downloads = #{downloads,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = now(),
+      </if>
+    </set>
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </update>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.teachercloud.pojo.File">
+    update file
+    set user_id = #{userId,jdbcType=INTEGER},
+      course_id = #{courseId,jdbcType=INTEGER},
+      class_id = #{classId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      main_image = #{mainImage,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      downloads = #{downloads,jdbcType=INTEGER},
+      count = #{count,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </update>
+
+  <!--
+        通过文件名查找文件（全局查询）
+        List<File> lookupFileName(String name);
+  -->
+  <select id="lookupFileName" resultMap="BaseResultMap" parameterType="String">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM file
+    WHERE name = #{name}
+  </select>
+
+
+  <!--
+        通过课程查找文件(一级查询（课程类型）)
+        List<File>  loadFirstFileCourse(Integer courseId);
+  -->
+  <select id="loadFirstFileCourse" resultMap="BaseResultMap" parameterType="Integer">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM file
+    WHERE course_id = #{courseId}
+  </select>
+
+  <!--
+          通过文件类型查找文件(二级查询（文件类型）)
+          List<File> loadSecondFileType(@Param("courseId")Integer courseId ,@Param("type") Integer type);
+  -->
+  <select id="loadSecondFileType" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM file
+    WHERE course_id = #{courseId}
+    AND type= #{type}
+  </select>
+
+
+  <!--
+         模糊查询通过关键字查询
+         List<File> vagueFile(@Param("courseId")Integer courseId,@Param("type") Integer type,
+                                @Param("name")String name);
+  -->
+  <sql id="FileWhere">
+    <where>
+      <if test="courseId !=null &amp;&amp; courseId !=''">
+        and course_id = #{courseId}
+      </if>
+      <if test="type !=null &amp;&amp; type !=''">
+        and type = #{type}
+      </if>
+      <if test="name !=null &amp;&amp; name !=''">
+        and name like CONCAT("%" , #{name} , "%")
+      </if>
+    </where>
+  </sql>
+
+  <select id="vagueFile" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM file
+    <include refid="FileWhere"></include>
+  </select>
+
+
+  <!--
+          遍历所有的文件信息
+          List<File> flieList();
+  -->
+  <select id="flieList" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM file
+  </select>
+
+
+  <!--
+       下载后 - ->下载次数+1
+      int updateDownloads(@Param("name") String name);
+  -->
+  <update id="updateDownloads">
+    UPDATE file
+    SET
+     downloads = downloads+1
+     WHERE name = #{name}
+  </update>
+
+
+
+
+  <!--int updateStatus(Long fileId) ;-->
+  <update id="updateStatus" parameterType="java.lang.Integer">
+    UPDATE file
+    SET
+     status = #{flag}
+     WHERE file_id = #{fileId}
+  </update>
+
+
+  <update id="updateFileDetail" parameterType="com.teachercloud.pojo.File">
+    update file
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="mainImage != null">
+        main_image = #{mainImage,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="downloads != null">
+        downloads = #{downloads,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      update_time = now(),
+    </set>
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </update>
+
+  <!--
+
+        List<Integer> selectByKeyWordAndColumn(@Param("keyword")String keyword,
+                                             @Param("column")String column);
+    -->
+  <select id="selectByKeyWordAndColumn" resultType="java.lang.Integer" parameterType="map">
+    SELECT course_id
+    FROM file
+     WHERE
+        ${column}
+        like #{keyword}
+  </select>
+
+  <!--
+      List<File>  selectFileByCourseId( @Param("userId") List<Integer> courseId, @Param("keyword") String keyword,
+      @Param("column") String column);
+  -->
+
+  <select id="selectFileByCourseId" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"/>
+    from file where ${column} like #{keyword}
+    and course_id in
+    <foreach index="index" item="courseIds" collection="courseIds" open="(" separator="," close=")">
+      #{courseIds}
+    </foreach>
+  </select>
+
+</mapper>

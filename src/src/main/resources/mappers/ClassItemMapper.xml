@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teachercloud.dao.ClassItemMapper">
+    <resultMap id="BaseResultMap" type="com.teachercloud.pojo.ClassItem">
+        <constructor>
+            <idArg column="class_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="class_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+    class_id, class_name, status
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from class_item
+        where class_id = #{classId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from class_item
+    where class_id = #{classId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.teachercloud.pojo.ClassItem">
+    insert into class_item (class_id, class_name, status
+      )
+    values (#{classId,jdbcType=BIGINT}, #{className,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.teachercloud.pojo.ClassItem">
+        insert into class_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classId != null">
+                class_id,
+            </if>
+            <if test="className != null">
+                class_name,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classId != null">
+                #{classId,jdbcType=BIGINT},
+            </if>
+            <if test="className != null">
+                #{className,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.teachercloud.pojo.ClassItem">
+        update class_item
+        <set>
+            <if test="className != null">
+                class_name = #{className,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where class_id = #{classId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.teachercloud.pojo.ClassItem">
+    update class_item
+    set class_name = #{className,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
+    where class_id = #{classId,jdbcType=BIGINT}
+  </update>
+    <select id="getClassItemByClassId" resultMap="BaseResultMap" parameterType="list">
+        select
+        <include refid="Base_Column_List"/>
+        from class_item
+        where class_id in
+        <foreach item="classId" collection="list" open="(" separator="," close=")">
+            #{classId.class_id}
+        </foreach>
+    </select>
+
+
+    <delete id="deleteClass" parameterType="map">
+        delete from class_item
+        where class_id in
+        <foreach item="classId" collection="classId" open="(" separator="," close=")">
+            #{classId}
+        </foreach>
+    </delete>
+
+    <select id="queryAll" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from class_item
+    </select>
+
+    <update id="updateClassItemCourseStatusBybatch" parameterType="map">
+        update class_item
+        set status = #{status}
+        where class_id in
+        <foreach item="calssIds" collection="calssIds" open="(" separator="," close=")">
+            #{calssIds}
+        </foreach>
+    </update>
+</mapper>

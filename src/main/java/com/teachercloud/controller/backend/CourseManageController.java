@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * User: mann
@@ -140,6 +141,5 @@ public class CourseManageController {
         }
         return ServerResponse.createByErrorMessage("无操作权限，请登录管理员账户进行操作!");
     }
-
 
 }

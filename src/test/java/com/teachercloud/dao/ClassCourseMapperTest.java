@@ -27,4 +27,11 @@ public class ClassCourseMapperTest {
         System.out.println(classCourseMapper.selectCourseIdByClassId(5163002641L).size());
     }
 
+    @Test
+    public void selectCourseIdByAllClassId() {
+        List<Long> a = Lists.newArrayList();
+        a.add(5163002641L);
+        a.add(5173002641L);
+        System.out.println(classCourseMapper.selectCourseIdByAllClassId(a).size());
+    }
 }

@@ -59,4 +59,5 @@ public interface CourseMapper {
      * @return
      */
     int updateCourseStatusBybatch(@Param("courseId") int[] courseId, @Param("status") Integer status);
+
 }
